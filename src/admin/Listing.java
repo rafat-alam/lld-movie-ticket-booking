@@ -48,4 +48,12 @@ public class Listing {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void getBookedList(int show_id) {
+        try {
+            Show.getBookedList(show_id);
+        } catch (IdNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

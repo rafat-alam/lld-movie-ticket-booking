@@ -1,4 +1,5 @@
 import admin.Listing;
+import client.Booking;
 
 void main() {
     Scanner sc = new Scanner(System.in);
@@ -9,7 +10,9 @@ void main() {
             System.out.println("2. Add Screen");
             System.out.println("3. Add Movie");
             System.out.println("4. Add Show");
-            System.out.println("5. Show Me");
+            System.out.println("5. Show Me City List");
+            System.out.println("6. Book Tickets");
+            System.out.println("7. Booked Seat List");
             System.out.println("Else. Exit");
 
             System.out.print("Enter : ");
@@ -87,6 +90,29 @@ void main() {
                 sc.nextLine();
 
                 Listing.fetchCity(city, date, month, year);
+            } else if (x == 6) {
+                System.out.print("Show Id : ");
+                int show_id = sc.nextInt();
+                System.out.print("User Id : ");
+                int user_id = sc.nextInt();
+                sc.nextLine();
+                Booking.initBookTicket(show_id);
+
+                System.out.print("No of tickets : ");
+                int no_t = sc.nextInt();
+                sc.nextLine();
+                Booking.getPaymentTotal(show_id, no_t);
+
+                System.out.print("Pay : Rs.");
+                double amount = sc.nextDouble();
+                sc.nextLine();
+                Booking.Payment(amount, show_id, no_t, user_id);
+            } else if(x == 7) {
+                System.out.print("Show Id : ");
+                int show_id = sc.nextInt();
+                sc.nextLine();
+
+                Listing.getBookedList(show_id);
             } else {
                 break;
             }

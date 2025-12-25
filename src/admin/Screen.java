@@ -2,17 +2,15 @@ package admin;
 
 import exceptions.IdNotFoundException;
 import exceptions.IsZeroOrNegException;
+import universal.Date;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Screen {
     int id;
     int theatreId;
     int capacity;
-    List<Integer> show_ids;
+    Map<Date, List<Integer>> show_ids;
 
     static Map<Integer, Screen> listedScreen = new HashMap<>();
     static int screenCount = 0;
@@ -29,7 +27,7 @@ public class Screen {
         this.id = ++screenCount;
         this.theatreId = theatreId;
         this.capacity = capacity;
-        this.show_ids = new ArrayList<>();
+        this.show_ids = new HashMap<>();
         listedScreen.put(screenCount, this);
         System.out.println("Screen created with id : " + screenCount);
     }
@@ -42,13 +40,23 @@ public class Screen {
         return screen;
     }
 
-    static void fetchScreen(int screen_id) {
+    static void addShow(int screen_id, int show_id, Date date) {
+        Screen screen = listedScreen.get(screen_id);
+        List<Integer> showlist = screen.show_ids.computeIfAbsent(date, k -> new ArrayList<>());
+
+        showlist.add(show_id);
+    }
+
+    static void fetchScreen(int screen_id, Date date) {
         Screen screen = listedScreen.get(screen_id);
         System.out.println("Screen Id : " + screen_id);
         System.out.println("Screen Capacity : " + screen.capacity);
 
-        for(int show_id : screen.show_ids) {
-            Show.fetchShow(show_id);
+        List<Integer> showlist = screen.show_ids.get(date);
+        if(showlist != null) {
+            for(int show_id : showlist) {
+                Show.fetchShow(show_id);
+            }
         }
     }
 }
